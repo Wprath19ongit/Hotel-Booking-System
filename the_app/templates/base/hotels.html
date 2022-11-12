@@ -1,0 +1,95 @@
+{% extends 'start.html' %}
+
+
+{% block content %}
+<style>
+.container{
+    margin-left: 25%; 
+    margin-right: 10px
+
+};
+</style>
+<div class="container">
+<h2>Hello {{cus.first_name}} {{cus.last_name}}</h2>
+
+<form method="POST">    
+    {%csrf_token%}
+    <button type="submit" name="update_cust_page" formaction="{% url 'update_cust_page' cus.cust_id %}">update profile</button>
+</form>
+<hr>
+<form method="GET" action="{% url 'hotel' cus.cust_id %}">
+    {% csrf_token %}
+    <label>
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+            <title>search</title>
+            <path
+                d="M32 30.586l-10.845-10.845c1.771-2.092 2.845-4.791 2.845-7.741 0-6.617-5.383-12-12-12s-12 5.383-12 12c0 6.617 5.383 12 12 12 2.949 0 5.649-1.074 7.741-2.845l10.845 10.845 1.414-1.414zM12 22c-5.514 0-10-4.486-10-10s4.486-10 10-10c5.514 0 10 4.486 10 10s-4.486 10-10 10z">
+            </path>
+        </svg>
+        <input name="q" placeholder="Search for hotels" />
+    </label>
+</form>
+
+
+<h2>hotels found: {{h_count}}</h2>
+
+{% for hotel in hotels %}
+    <h1>{{ hotel.field_hotel_name }}  </h1>
+    <h3>city: {{hotel.city}}</h3>
+    <h4>amenities: {{hotel.amenities}}</h4>
+    <h4>address: {{hotel.address}}</h4>
+    <h3 style="display: inline;"> Cuisine: &emsp;
+        {% for f in food%}
+            {% if f.hotel.hotel_id == hotel.hotel_id %}
+                {% for c in cuisine%}
+                    {%if f.cuisine == c%}
+                        <h3 style="display: inline;">{{c.cuisine}}, </h3>
+                    {%endif%}
+                {%endfor%}
+            {%endif%}
+        {%endfor%}
+    </h3>
+
+    <hr>
+    <h3>Rooms:</h3>
+    {% for room in rooms %}
+        {%if room.hotel.hotel_id == hotel.hotel_id %}
+            <h4><p>
+                {{room.id}}</p>
+                Type: {{room.room_type}} &emsp; 
+                {%if room.air_conditioned%}
+                    AC
+                {%else%}
+                    Non-AC
+                {%endif%}
+            </h4>
+            <h4>
+                Available: {{room.available}} &emsp; 
+                Price: {{room.price}}
+            </h4>    
+            <h4>
+                Accomodities: {{room.accomodities}} &emsp;
+                {%if room.available == "yes"%}
+                    <form mathod="POST">
+                        {%csrf_token%}
+                        <button type="submit" name="book" formaction="{% url 'booking' cus.cust_id  hotel.hotel_id  room.room_id %}">book</button>
+                    </form>
+                {%else%}
+                <form mathod="POST">
+                    {%csrf_token%}
+                    {%for r in res%}
+                        {%if r.room_id == room.room_id and r.checkout.date > now %}
+                            <h4>booked from {{r.checkin.date}} till {{r.checkout.date}}</h4>
+                        {%endif%}
+                    {%endfor%}
+                    <button type="submit" name="book" formaction="{% url 'booking' cus.cust_id  hotel.hotel_id  room.room_id %}">book</button>
+                </form>
+                {%endif%}
+            </h4>
+            <br>
+        {%endif%}        
+    {%endfor%}
+    <hr>
+{% endfor %}
+</div>
+{% endblock content %}

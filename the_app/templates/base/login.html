@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-in</title>
+
+</head>
+
+<body bgcolor="aqua">
+    <h1> 
+        Hotel booking
+    </h1>
+
+    <h2 id="register">Please sign-in</h2>
+    
+
+    <style>
+        .big_left {
+            width: 400px;
+            height: 400px;
+            float: left;
+            display: inline;
+        }
+
+        .big_right {
+            width: 400px;
+            height: 400px;
+            float: right;
+            display: inline;
+        }
+
+        .container {
+            margin-left: 10%;
+            margin-right: 10%;
+            margin-top: 3%;
+        }
+
+        .left {
+            padding-left: 10px;
+            margin-top: 10%;
+            margin-left: 20%;
+            margin-right: 20%;
+            height: 250px;
+            width: 250px;
+            float: left;
+            background: yellow;
+
+        }
+
+        .H2 {
+            color: bisque;
+
+        }
+
+        .right {
+            padding-left: 10px;
+            margin-top: 10%;
+            margin-right: 20%;
+            margin-left: 20%;
+            height: 250px;
+            width: 250px;
+            float: left;
+            background: rebeccapurple;
+            border: block 4px;
+        }
+        @media only screen and (max-width: 1028px){
+            .big_left {
+                width: 100%;
+                height: 400px;
+                float: left;
+                display: block;
+            }
+    
+            .big_right {
+                width: 100%;
+                height: 400px;
+                float: right;
+                display: block;
+            }
+            
+    
+        }
+    </style>
+
+    <div class="container">
+        <div class="big_left">
+            <div class="left">
+                <form method="post">
+
+                    {% csrf_token %}
+                    <H2> Manager login</H2>
+                    <h6>{{msg1}}</h6>
+                    <label for="M_name">Enter username:</label>
+                    <input type="text" id="M_name" name="M_name" value=""><br><br>
+
+                    <label for="M_pass">Enter password:</label>
+                    <input type="password" id="M_pword" name="M_pword" value=""><br><br>
+
+                    <button type="submit" name="M_login" formaction="{% url 'login_page' %}">manager login</button>
+                    
+                </form>
+
+            </div>
+        </div>
+        <div class="big_right">
+            <div class="right">
+                <form method="post">
+
+                    {% csrf_token %}
+                    <H2> Customer login</H2>
+                    <h6>{{msg2}}</h6>
+                    <label for="C_name">Enter username:</label>
+                    <input type="text" id="C_name" name="C_name" value=""><br><br>
+
+                    <label for="C_pass">Enter password:</label>
+                    <input type="password" id="C_pword" name="C_pword" value="">
+                    <br><br>
+
+                    <button style="display: block;" type="submit" name="C_login" formaction="{% url 'login_page' %}">customer login</button>
+<hr>
+                    <h3 style="display: inline;"> new user <a style="background-color: white;" href="{% url 'register_page' %}" style="text-decoration: none; color: black"> register here</a></h3>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

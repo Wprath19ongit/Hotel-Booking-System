@@ -1,0 +1,90 @@
+{% extends 'start.html' %}
+
+
+{% block content %}
+<style>
+    .container{
+        margin-left: 25%; 
+        margin-right: 10px;
+    };
+</style>
+<div class="container">
+
+<hr>
+<h1>Manager Page</h1>
+<hr>
+<h3>Name: {{man.first_name}} {{man.last_name}}</h3>
+<h3>email: <a href="mailto:{{man.email}}">{{man.email}}</a></h3>
+<h3>phone: <a href="tel:{{man.phone_number}}">{{man.phone_number}}</a></h3>
+<form method="POST">    
+    {%csrf_token%}
+    <button type="submit" name="update_man_page" formaction="{% url 'update_man_page' man.manager_id %}">update profile</button>
+</form>
+<hr>
+<h2>Hotel Details</h2>
+    <h2>hotel: {{hotel.field_hotel_name}}</h2>
+    <h3><u>city</u>: {{hotel.city}}</h3>
+    <h4><u>amenities</u>: {{hotel.amenities}}</h4>
+    <h4><u>address</u>: {{hotel.address}}</h4>
+    <form method="POST">    
+        {%csrf_token%}
+        <button type="submit" name="update_hotel" formaction="{% url 'update_hotel_page' hotel.hotel_id %}">update details</button>
+    </form>
+<hr>
+<div class="bigbox">
+    <div class="leftbox">
+<h2>Rooms in {{hotel.field_hotel_name}} are- </h2>
+
+<form method="GET" action="{% url 'manager_page' man.manager_id %}">
+    {% csrf_token %}
+    <label>
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+            <title>search</title>
+            <path
+                d="M32 30.586l-10.845-10.845c1.771-2.092 2.845-4.791 2.845-7.741 0-6.617-5.383-12-12-12s-12 5.383-12 12c0 6.617 5.383 12 12 12 2.949 0 5.649-1.074 7.741-2.845l10.845 10.845 1.414-1.414zM12 22c-5.514 0-10-4.486-10-10s4.486-10 10-10c5.514 0 10 4.486 10 10s-4.486 10-10 10z">
+            </path>
+        </svg>
+        <input name="q1" placeholder="Search for rooms" />
+    </label>
+</form>
+
+{%for r in room%}
+<h3>{{r.room_type}}</h3>
+{%if r.air_conditioned%}
+    <h3> Room is Air conditioned </h3>
+{% else %}
+    <h3> Room is not Air Conditioned </h3>
+{%endif%}
+<h3>available: {{r.available}} &emsp; price:{{r.price}}</h3>
+<h3>{{r.accomodities}}</h3>
+<br>
+{%endfor%}
+</div>
+<hr>
+<div class="rightbox">
+    <h2>Hotel Reviews-</h2>
+
+<form method="GET" action="{% url 'manager_page' man.manager_id %}">
+    {% csrf_token %}
+    <label>
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+            <title>search</title>
+            <path
+                d="M32 30.586l-10.845-10.845c1.771-2.092 2.845-4.791 2.845-7.741 0-6.617-5.383-12-12-12s-12 5.383-12 12c0 6.617 5.383 12 12 12 2.949 0 5.649-1.074 7.741-2.845l10.845 10.845 1.414-1.414zM12 22c-5.514 0-10-4.486-10-10s4.486-10 10-10c5.514 0 10 4.486 10 10s-4.486 10-10 10z">
+            </path>
+        </svg>
+        <input name="q2" placeholder="Search for rooms" />
+    </label>
+</form>
+
+    {%for rev in review%}
+    <h3>Name: {{rev.cust.first_name}} {{rev.cust.last_name}}</h3>
+    <h3>Rating: {{rev.rating}} stars</h3>
+    <h3> review: {{rev.comments}}</h3>
+    <br>
+    {%endfor%}
+    <h3>{{room.room_type}}</h3>
+</div>
+</div>
+</div>
+{% endblock content %}

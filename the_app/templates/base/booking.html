@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>booking</title>
+    <!-- <link rel="stylesheet" href="sign_in.css"> -->
+</head>
+<body bgcolor="skyblue">
+    <h1> 
+        Hotel booking
+    </h1>
+
+    <h2 id="register">Booking a room in {{hotel.field_hotel_name}}</h2>
+    <h4>{{msg1}}</h4>
+
+    <h4>
+        Type: {{room.room_type}} &emsp; 
+        {%if room.air_conditioned%}
+            AC
+        {%else%}
+            Non-AC
+        {%endif%}
+    </h4>
+    <h4>
+        Available: {{room.available}} &emsp; 
+        Price: {{room.price}}
+    </h4>    
+    <h4>
+        Accomodities: {{room.accomodities}} &emsp;
+        <hr>
+    <form method="POST">    
+    
+        {% csrf_token %}
+        
+        {% for r in res%}
+            {%if r.checkout.date > now and room.room_id == r.room_id %}
+                <h4>booking available avafter {{r.checkout}}</h4>
+            {%endif%}
+        {%endfor%}
+        <label for="start">Start Date:</label>
+        <input type="date" id="start" name="start" value=""><br><br>
+
+        <label for="end">Last name:</label>
+        <input type="date" id="end" name="end" value=""><br><br>
+        
+        <button type="submit" name = "register" formaction={% url 'booking' cus.cust_id hotel.hotel_id room.room_id %}>Make payment</button>  
+        <!-- formaction to be specified -->
+    </form>
+  
+    
+</body>
+</html>

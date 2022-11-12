@@ -1,0 +1,18 @@
+
+<style>
+    .mainName,#logout_btn{
+        margin-top: 10px;
+        margin-left: 15%;
+    };
+</style>
+
+<h2 class="mainName">
+    HOTEL booking System
+</h2>
+<form method="POST">    
+    {%csrf_token%}
+    <button id="logout_btn" type="submit" name="logout" formaction="{% url 'logout_page'%}">Logout</button>
+</form>
+
+
+
